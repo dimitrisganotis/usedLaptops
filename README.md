@@ -1,5 +1,17 @@
-# usedLaptops Project
+# usedLaptops (v1.0)
 
-This is the source code of the usedLaptops Project.
+Usedlaptops is the **first** application I have ever developed, to the standards of a university project assigned to me.
 
-A PHP/MySQL/HTML/CSS Project.
+## Built With
+
+* HTML
+* CSS
+* Javascript
+* PHP
+* MySQL
+
+I didn't use any frameworks at all.
+
+## New Version
+
+A new version of usedLaptops (v2.0) is going to be released soon to a new branch.
