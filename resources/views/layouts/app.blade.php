@@ -38,11 +38,9 @@
                         <li class="nav-item {{ Route::currentRouteName() == 'laptops.index' ? 'active' : '' }}">
                             <a href="{{ route('laptops.index') }}" class="nav-link">Browse Laptops</a>
                         </li>
-                        {{--@auth--}}
-                            <li class="nav-item">
-                                <a href="{{ route('laptops.index') }}" class="nav-link disabled">Post laptop</a>
-                            </li>
-                        {{--@endauth--}}
+                        <li class="nav-item">
+                            <a href="{{ route('laptops.create') }}" class="nav-link @guest disabled @endguest">Post Laptop</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -84,6 +82,10 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <footer class="mt-auto bg-primary text-white p-3">
+            <p class="text-center lead mb-0">{{ config('app.name', 'Laravel') }} &copy; {{ date('Y') }}</p>
+        </footer>
     </div>
 </body>
 </html>

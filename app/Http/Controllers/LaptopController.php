@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\{ User, Laptop };
 use Auth;
 use Psy\Util\Json;
 use Response;
-use View;
-use Carbon\Carbon;
 
 class LaptopController extends Controller
 {
@@ -24,12 +23,14 @@ class LaptopController extends Controller
 
     public function index(Request $request)
     {
+        $title = 'Browse Laptops';
         $laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
-        $brands = Laptop::distinct()->pluck('brand');
+        // $brands = Laptop::distinct()->pluck('brand');
+        $brands = json_decode(Storage::get('brands.json'), true);
 
         if( empty($request->all()) ) {
-            return view('laptops', [
-                'title' => 'Browse Laptops',
+            return view('laptops.index', [
+                'title' => $title,
                 'laptops' => $laptops,
                 'brands' => $brands
             ]);
@@ -38,8 +39,8 @@ class LaptopController extends Controller
                 $laptops->where($key, $value);
             }
 
-            return view('laptops', [
-                'title' => 'Browse Laptops',
+            return view('laptops.index', [
+                'title' => $title,
                 'laptops' => $laptops->get(),
                 'brands' => $brands,
             ]);
@@ -48,8 +49,12 @@ class LaptopController extends Controller
 
     public function create()
     {
-        return view('', [
+        $title = 'Post Laptop';
+        $brands = json_decode(Storage::get('brands.json'), true);
 
+        return view('laptops.create', [
+            'title' => $title,
+            'brands' => $brands,
         ]);
     }
 

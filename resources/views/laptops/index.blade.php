@@ -22,9 +22,8 @@
                     <div class="form-group">
                         <label for=""></label>
                         <select class="form-control" id="" size="5" multiple>
-                            <!-- NOTE! must change -->
-                            @foreach( $brands as $brand )
-                                <option title="{{ $brand }}">{{ $brand }}</option>
+                            @foreach( $brands as $brandCode => $brandName )
+                                <option title="{{ $brandCode }}">{{ $brandName }}</option>
                             @endforeach
                         </select>
                     </div>

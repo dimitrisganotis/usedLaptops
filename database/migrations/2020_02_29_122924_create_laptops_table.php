@@ -24,11 +24,11 @@ class CreateLaptopsTable extends Migration
             $table->tinyInteger('cpuCores')->nullable();
             $table->decimal('cpuFrequency', 3, 2)->nullable();
             $table->tinyInteger('ramSize');
-            $table->string('storage'); // Json
+            $table->string('storage')->nullable(); // Json
             $table->set('os', ['Windows', 'Linux', 'macOS', 'Chrome OS']);
             $table->boolean('damage');
             $table->decimal('price');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->unsignedMediumInteger('views')->default(0);
             $table->timestamps();
 
