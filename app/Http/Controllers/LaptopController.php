@@ -8,6 +8,7 @@ use Auth;
 use Psy\Util\Json;
 use Response;
 use View;
+use Carbon\Carbon;
 
 class LaptopController extends Controller
 {
@@ -23,21 +24,24 @@ class LaptopController extends Controller
 
     public function index(Request $request)
     {
+        $laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
+        $brands = Laptop::distinct()->pluck('brand');
+
         if( empty($request->all()) ) {
             return view('laptops', [
                 'title' => 'Browse Laptops',
-                'laptops' => Laptop::all()
+                'laptops' => $laptops,
+                'brands' => $brands
             ]);
         } else {
-            $laptops = Laptop::select('*');
-
             foreach( $request->all() as $key => $value ) {
                 $laptops->where($key, $value);
             }
 
             return view('laptops', [
                 'title' => 'Browse Laptops',
-                'laptops' => $laptops->get()
+                'laptops' => $laptops->get(),
+                'brands' => $brands,
             ]);
         }
     }

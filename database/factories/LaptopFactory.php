@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Laptop::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
+        'user_id' => $faker->numberBetween(1, 5),
         'brand' => $faker->company,
         'model' => $faker->name,
         'year' => $faker->year,
