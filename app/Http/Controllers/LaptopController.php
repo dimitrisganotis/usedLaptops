@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\{ User, Laptop };
 use Auth;
-use Psy\Util\Json;
-use Response;
 
 class LaptopController extends Controller
 {
@@ -24,27 +22,24 @@ class LaptopController extends Controller
     public function index(Request $request)
     {
         $title = 'Browse Laptops';
-        $laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
+        //$laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
+        $laptops = Laptop::select('*');
         // $brands = Laptop::distinct()->pluck('brand');
         $brands = json_decode(Storage::get('brands.json'), true);
 
-        if( empty($request->all()) ) {
-            return view('laptops.index', [
-                'title' => $title,
-                'laptops' => $laptops,
-                'brands' => $brands
-            ]);
-        } else {
-            foreach( $request->all() as $key => $value ) {
-                $laptops->where($key, $value);
+        if( !empty($request->all()) ) {
+            if( !$request->input('page') || ( $request->input('page') && count($request->all()) > 1 ) ) {
+                foreach( $request->all() as $key => $value ) {
+                    $laptops->where($key, $value);
+                }
             }
-
-            return view('laptops.index', [
-                'title' => $title,
-                'laptops' => $laptops->get(),
-                'brands' => $brands,
-            ]);
         }
+
+        return view('laptops.index', [
+            'title' => $title,
+            'laptops' => $laptops->paginate(5),
+            'brands' => $brands
+        ]);
     }
 
     public function create()
@@ -68,6 +63,13 @@ class LaptopController extends Controller
 
     public function show(Laptop $laptop)
     {
+        $title = $laptop->brand . ' ' . $laptop->model . ($laptop->year ? " ($laptop->year) " : ' ');
+
+        return view('laptops.show', [
+            'title' => $title,
+            'laptop' => $laptop,
+        ]);
+
         return response()->json(Laptop::find($laptop));
     }
 

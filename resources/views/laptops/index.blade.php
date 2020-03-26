@@ -58,28 +58,24 @@
 
         </div>
 
-        <div class="col-md-9 pr-0">
-            <div class="row m-0">
-                <div class="col mt-n4">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for=""></label>
-                            <input type="text" class="form-control" name="" placeholder="Search">
-                        </div>
-                    </div>
+        <div id="laptops" class="col-md-9 pr-0">
+            <div class="d-flex justify-content-between mt-n4">
+                <div class="form-group">
+                    <label for=""></label>
+                    <input type="text" class="form-control" name="" placeholder="Search">
                 </div>
 
-                <div class="col mt-n4">
-                    <div class="row justify-content-end">
-                        <div class="form-group">
-                            <label for=""></label>
-                            <select class="form-control" name="">
-                                <option selected disabled>Sort By</option>
-                                <option>ASC</option>
-                                <option>DESC</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="mt-4">
+                    {{ $laptops->links() }}
+                </div>
+
+                <div class="form-group">
+                    <label for=""></label>
+                    <select class="form-control" name="">
+                        <option selected disabled>Sort By</option>
+                        <option>ASC</option>
+                        <option>DESC</option>
+                    </select>
                 </div>
             </div>
 
@@ -101,15 +97,19 @@
                         } else {
                             $diff_from_now = $updated_at->format('jS \\of F Y');
                         }
+
+                        $laptopUrl = url("/laptops/{$laptop->id}");
                     @endphp
 
                     <div class="col mb-4">
                         <div class="card text-center">
-                            <img src="{{ asset('image/usedlaptops.png') }}" class="card-img-top" alt="...">
+                            <a href="{{ $laptopUrl }}">
+                                <img src="{{ asset('image/usedlaptops.png') }}" class="card-img-top" alt="Laptop image">
+                            </a>
 
                             <div class="card-body">
                                 <h5 class="card-title font-weight-bold">
-                                    {{ $laptopBrandModel }} <br> {!! $laptop->year ? '('.$laptop->year.')' : '&nbsp;' !!}
+                                    <a href="{{ $laptopUrl }}">{{ $laptopBrandModel }} <br> {!! $laptop->year ? '('.$laptop->year.')' : '&nbsp;' !!}</a>
                                 </h5>
 
                                 <p class="card-text">
@@ -130,10 +130,14 @@
                     </div>
                 @endforeach
             </div>
+
+            <div class="d-flex justify-content-center">
+                {{ $laptops->links() }}
+            </div>
+
         </div>
 
     </div>
-
 
 </div>
 @endsection
