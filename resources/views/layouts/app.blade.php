@@ -14,14 +14,15 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ca6d867cb3.js" crossorigin="anonymous"></script>-->
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm py-3">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('image/usedLaptops.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -83,9 +84,15 @@
             @yield('content')
         </main>
 
-        <footer class="mt-auto bg-primary text-white p-3">
-            <p class="text-center lead mb-0">{{ config('app.name', 'Laravel') }} &copy; {{ date('Y') }}</p>
+        <footer class="mt-auto">
+            <div class="container border-top py-3 text-center">
+                <p class="lead mb-0">{{ config('app.name', 'Laravel') }} &copy; {{ date('Y') }}</p>
+                <p><small>Developed by Dimitris Ganotis</small></p>
+            </div>
         </footer>
     </div>
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\ViewModels\LaptopsViewModel;
 use App\{ User, Laptop };
 use Auth;
 
@@ -37,7 +38,7 @@ class LaptopController extends Controller
 
         return view('laptops.index', [
             'title' => $title,
-            'laptops' => $laptops->paginate(5),
+            'laptops' => $laptops->paginate(6),
             'brands' => $brands
         ]);
     }
@@ -63,14 +64,11 @@ class LaptopController extends Controller
 
     public function show(Laptop $laptop)
     {
-        $title = $laptop->brand . ' ' . $laptop->model . ($laptop->year ? " ($laptop->year) " : ' ');
+        //['id', 'user_id', 'description', 'views', 'created_at', 'updated_at']
+        $laptop->timestamps = false;
+        $laptop->increment('views');
 
-        return view('laptops.show', [
-            'title' => $title,
-            'laptop' => $laptop,
-        ]);
-
-        return response()->json(Laptop::find($laptop));
+        return view('laptops.show', new LaptopsViewModel($laptop));
     }
 
     public function edit($id)
