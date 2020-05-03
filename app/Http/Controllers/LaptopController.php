@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\ViewModels\LaptopsViewModel;
 use App\{ User, Laptop };
+use App\Http\Requests\StoreLaptop;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class LaptopController extends Controller
 {
@@ -26,7 +28,7 @@ class LaptopController extends Controller
         //$laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
         $laptops = Laptop::select('*');
         // $brands = Laptop::distinct()->pluck('brand');
-        $brands = json_decode(Storage::get('brands.json'), true);
+        $brands = json_decode(Storage::get('brands.json'));
 
         if( !empty($request->all()) ) {
             if( !$request->input('page') || ( $request->input('page') && count($request->all()) > 1 ) ) {
@@ -38,7 +40,7 @@ class LaptopController extends Controller
 
         return view('laptops.index', [
             'title' => $title,
-            'laptops' => $laptops->paginate(6),
+            'laptops' => $laptops->latest()->paginate(6),
             'brands' => $brands
         ]);
     }
@@ -46,7 +48,7 @@ class LaptopController extends Controller
     public function create()
     {
         $title = 'Post Laptop';
-        $brands = json_decode(Storage::get('brands.json'), true);
+        $brands = json_decode(Storage::get('brands.json'));
 
         return view('laptops.create', [
             'title' => $title,
@@ -54,12 +56,11 @@ class LaptopController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreLaptop $request)
     {
-        // factory(\App\User::class)->create();
-        return Laptop::create([
+        Laptop::create($request->validated());
 
-        ]);
+        return redirect('/laptops');
     }
 
     public function show(Laptop $laptop)

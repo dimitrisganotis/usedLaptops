@@ -61,28 +61,30 @@
     </div>
 
     <div class="bg-white border p-3">
-        <p class="mb-2 font-1point2em"><strong>Description</strong></p>
-        <p class="mb-4 font-1point2em">{{ $laptop->description }}</p>
+        @if($laptop->description)
+            <p class="mb-2 font-1point2em"><strong>Description</strong></p>
+            <p class="mb-4 font-1point2em">{{ $laptop->description }}</p>
+        @endif
 
         <p class="mb-2 font-1point2em"><strong>Specifications</strong></p>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered mb-0">
                 <tbody>
-                    @foreach( $laptop->getAttributes() as $key => $value )
-                        @if( in_array($key, $hiddenLaptopAttributesFromTable) )
+                    @foreach($laptop->getAttributes() as $key => $value)
+                        @if(in_array($key, $hiddenLaptopAttributesFromTable))
                             @continue
                         @endif
 
-                        @if( $key == 'storage' && count($storage) > 1 )
-                            <th scope="row">{{ $key }}</th>
+                        @if(($key == 'storage1' || $key == 'storage2') && (count($storage1) > 0 || count($storage2) > 0))
+                            <th scope="row">storage</th>
                             <td>
-                                <table class="table table-striped table-bordered mb-0">
+                                <table class="table table-striped table-bordered mb-0 text-uppercase">
                                     <tbody>
-                                        @foreach( $storage as $storageKey => $storageValue )
+                                        @foreach($storage1 as $storageKey => $storageValue)
                                             <tr>
                                                 <th>{{ $storageKey }}</th>
-                                                <td>{{ $storageValue }}</td>
+                                                <td>{{ $storageInfo['size'].$storageInfo['unit'] }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -91,14 +93,32 @@
                             @continue
                         @endif
 
-                        <tr>
-                            <th scope="row">{{ $key }}</th>
-                            <td>
-                                {{ $value }}
-                                @if( $key == 'ramSize' ) GB @elseif( $key == 'cpuFrequency' ) GHz @endif
-                            </td>
-                        </tr>
+                        @if(!empty($value))
+                            <tr>
+                                <th scope="row">{{ $key }}</th>
+                                <td>
+                                    {{ $value }}
+                                    @if($key == 'ramSize') GB @elseif($key == 'cpuFrequency') GHz @endif
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
+
+                    @if(count($storage[0]) > 0 || count($storage[1]) > 0)
+                        <th scope="row">storage</th>
+                        <td>
+                            <table class="table table-striped table-bordered mb-0 text-uppercase">
+                                <tbody>
+                                    @foreach($storage as $storageInfo)
+                                        <tr>
+                                            <th>{{ $storageInfo['type'] }}</th>
+                                            <td>{{ $storageInfo['size'].$storageInfo['unit'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </td>
+                    @endif
                 </tbody>
             </table>
         </div>

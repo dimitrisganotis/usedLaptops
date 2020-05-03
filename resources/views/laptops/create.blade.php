@@ -14,28 +14,84 @@
     <div class="row mx-0 mt-4">
 
         <div class="col-md-8 offset-md-2 p-0">
-            <form>
+            <form method="POST" action="/laptops">
+                @csrf
+
+                <input
+                    type="hidden"
+                    name="user_id"
+                    value="{{ Auth::user()->id }}"
+                >
+
                 <!-- Laptop -->
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="brand">@lang('messages.brand')*</label>
-                        <select class="form-control" id="brand">
-                            <option value="" disabled selected>@lang('messages.select_brand')</option>
-                            @foreach( $brands as $brandCode => $brandName )
-                                <option title="{{ $brandCode }}">{{ $brandName }}</option>
+                        <select
+                            class="form-control @error('brand') is-invalid @enderror"
+                            id="brand"
+                            name="brand"
+                            required
+                        >
+                            <option
+                                value=""
+                                disabled
+                                {{ empty(old('brand')) ? 'selected' : '' }}
+                            >@lang('messages.select_brand')</option>
+
+                            @foreach( $brands as $brand )
+                                <option
+                                    value="{{ $brand }}"
+                                    title="{{ $brand }}"
+                                    {{ old('brand') == $brand ? 'selected' : '' }}
+                                >{{ $brand }}</option>
                             @endforeach
-                            <option title="@lang('messages.other')">@lang('messages.other')</option>
                         </select>
+
+                        @error('brand')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('brand') }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="model">@lang('messages.model')*</label>
-                        <input type="text" class="form-control" id="model" placeholder="@lang('messages.model')">
+                        <input
+                            type="text"
+                            class="form-control @error('model') is-invalid @enderror"
+                            id="model"
+                            name="model"
+                            placeholder="@lang('messages.model')"
+                            value="{{ old('model') }}"
+                            required
+                        >
+
+                        @error('model')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('model') }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-3">
                         <label for="year">@lang('messages.year')</label>
-                        <input type="number" class="form-control" id="year" placeholder="@lang('messages.year')" min="1970" max="{{ date('Y') }}">
+                        <input
+                            type="number"
+                            class="form-control @error('year') is-invalid @enderror"
+                            id="year"
+                            name="year"
+                            value="{{ old('year') }}"
+                            placeholder="@lang('messages.year')"
+                            min="1970"
+                            max="{{ \Carbon\Carbon::tomorrow()->year }}"
+                        >
+
+                        @error('year')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('year') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -45,27 +101,97 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="cpuBrand">@lang('messages.cpuBrand')*</label>
-                        <select class="form-control" id="cpuBrand">
-                            <option value="" disabled selected>@lang('messages.select_brand')</option>
-                            <option value="Intel">Intel</option>
-                            <option value="AMD">AMD</option>
-                            <option value="Other">@lang('messages.other')</option>
+                        <select
+                            class="form-control @error('cpuBrand') is-invalid @enderror"
+                            id="cpuBrand"
+                            name="cpuBrand"
+                            required
+                        >
+                            <option
+                                value=""
+                                disabled
+                                {{ empty(old('cpuBrand')) ? 'selected' : '' }}
+                            >@lang('messages.select_brand')</option>
+
+                            <option
+                                value="Intel"
+                                {{ old('cpuBrand') == 'Intel' ? 'selected' : '' }}
+                            >Intel</option>
+
+                            <option
+                                value="AMD"
+                                {{ old('cpuBrand') == 'AMD' ? 'selected' : '' }}
+                            >AMD</option>
+
+                            <option
+                                value="Other"
+                                {{ old('cpuBrand') == 'Other' ? 'selected' : '' }}
+                            >@lang('messages.other')</option>
                         </select>
+
+                        @error('cpuBrand')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('cpuBrand') }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-5">
-                        <label for="model">@lang('messages.cpuModel')</label>
-                        <input type="text" class="form-control" id="model" placeholder="@lang('messages.cpuModel')">
+                        <label for="cpuModel">@lang('messages.cpuModel')</label>
+                        <input
+                            type="text"
+                            class="form-control @error('cpuModel') is-invalid @enderror"
+                            id="cpuModel"
+                            name="cpuModel"
+                            value="{{ old('cpuModel') }}"
+                            placeholder="@lang('messages.cpuModel')"
+                        >
+
+                        @error('cpuModel')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('cpuModel') }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-2">
                         <label for="cpuCores">@lang('messages.cpuCores')</label>
-                        <input type="number" class="form-control" id="cpuCores" placeholder="@lang('messages.cpuCores')" min="1" max="128">
+                        <input
+                            type="number"
+                            class="form-control @error('cpuCores') is-invalid @enderror"
+                            id="cpuCores"
+                            name="cpuCores"
+                            value="{{ old('cpuCores') }}"
+                            placeholder="@lang('messages.cpuCores')"
+                            min="1"
+                            max="32"
+                        >
+
+                        @error('cpuCores')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('cpuCores') }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-md-2">
                         <label for="cpuFrequency">@lang('messages.cpuFrequency')</label>
-                        <input type="number" class="form-control" id="cpuFrequency" placeholder="@lang('messages.cpuFrequency_ghz')" min="1.0" max="7.0">
+                        <input
+                            type="number"
+                            class="form-control @error('cpuFrequency') is-invalid @enderror"
+                            id="cpuFrequency"
+                            name="cpuFrequency"
+                            value="{{ old('cpuFrequency') }}"
+                            placeholder="@lang('messages.cpuFrequency_ghz')"
+                            min="0.0"
+                            max="5.0"
+                        >
+
+                        @error('cpuFrequency')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('cpuFrequency') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -73,36 +199,137 @@
 
                 <!-- RAM & Storage -->
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-2">
                         <label for="ramSize">@lang('messages.ramSize')*</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="ramSize" placeholder="@lang('messages.ramSize')">
-
+                            <input
+                                type="number"
+                                class="form-control @error('ramSize') is-invalid @enderror"
+                                id="ramSize"
+                                name="ramSize"
+                                value="{{ old('ramSize') }}"
+                                placeholder="Size"
+                                min="1"
+                                max="32"
+                                required
+                            >
                             <div class="input-group-append">
                                  <span class="input-group-text">GB</span>
                             </div>
                         </div>
+
+                        @error('ramSize')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('ramSize') }}
+                            </div>
+                        @enderror
                     </div>
 
-                    <div class="form-group col-md-4">
-                        <label for="hdd">@lang('messages.storageHdd')</label>
+                    <div class="form-group col-md-5">
+                        <label for="storage1">Storage 1</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="hdd" placeholder="@lang('messages.storageHdd')">
+                            <div class="input-group-prepend">
+                                <select
+                                    class="form-control"
+                                    name="storage1[type]"
+                                >
+                                    <option
+                                        value="ssd"
+                                        {{ old('storage1.type') == 'ssd' ? 'selected' : '' }}
+                                    >SSD</option>
+
+                                    <option
+                                        value="hdd"
+                                        {{ old('storage1.type') == 'hdd' ? 'selected' : '' }}
+                                    >HDD</option>
+                                </select>
+                            </div>
+
+                            <input
+                                type="number"
+                                class="form-control @error('storage1') is-invalid @enderror"
+                                id="storage1"
+                                name="storage1[size]"
+                                value="{{ old('storage1.size') }}"
+                                placeholder="Size"
+                            >
 
                             <div class="input-group-append">
-                                 <span class="input-group-text">GB</span>
+                                <select
+                                    class="form-control"
+                                    name="storage1[unit]"
+                                >
+                                    <option
+                                        value="GB"
+                                        {{ old('storage1.unit') == 'GB' ? 'selected' : '' }}
+                                    >GB</option>
+
+                                    <option
+                                        value="TB"
+                                        {{ old('storage1.unit') == 'TB' ? 'selected' : '' }}
+                                    >TB</option>
+                                </select>
                             </div>
+
+                            @error('storage1')
+                                <div class="invalid-feedback">
+                                    Please provide valid storage. {{ $errors->first('storage1') }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
 
-                    <div class="form-group col-md-4">
-                        <label for="ssd">@lang('messages.storageSsd')</label>
+                    <div class="form-group col-md-5">
+                        <label for="storage2">Storage 2</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="ssd" placeholder="@lang('messages.storageSsd')">
+                            <div class="input-group-prepend">
+                                <select
+                                    class="form-control"
+                                    name="storage2[type]"
+                                >
+                                    <option
+                                        value="hdd"
+                                        {{ old('storage2.type') == 'hdd' ? 'selected' : '' }}
+                                    >HDD</option>
+
+                                    <option
+                                        value="ssd"
+                                        {{ old('storage2.type') == 'ssd' ? 'selected' : '' }}
+                                    >SSD</option>
+                                </select>
+                            </div>
+
+                            <input
+                                type="number"
+                                class="form-control @error('storage2') is-invalid @enderror"
+                                id="storage2"
+                                name="storage2[size]"
+                                value="{{ old('storage2.size') }}"
+                                placeholder="Size"
+                            >
 
                             <div class="input-group-append">
-                                 <span class="input-group-text">GB</span>
+                                <select
+                                    class="form-control"
+                                    name="storage2[unit]"
+                                >
+                                    <option
+                                        value="GB"
+                                        {{ old('storage2.unit') == 'GB' ? 'selected' : '' }}
+                                    >GB</option>
+
+                                    <option
+                                        value="TB"
+                                        {{ old('storage2.unit') == 'TB' ? 'selected' : '' }}
+                                    >TB</option>
+                                </select>
                             </div>
+
+                            @error('storage2')
+                                <div class="invalid-feedback">
+                                    Please provide valid storage. {{ $errors->first('storage2') }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -112,14 +339,44 @@
                 <!-- Operating System -->
                 <div class="form-row">
                     <div class="form-group col-12">
-                        <label for="os">@lang('messages.os')</label>
-                        <select class="form-control" id="os">
-                            <option value="" selected>@lang('messages.select_os')</option>
-                            <option title="Windows">Windows</option>
-                            <option title="Linux">Linux</option>
-                            <option title="macOS">macOS</option>
-                            <option title="Chrome OS">Chrome OS</option>
+                        <label for="os">@lang('messages.os')*</label>
+                        <select
+                            class="form-control @error('os') is-invalid @enderror"
+                            id="os"
+                            name="os"
+                            required
+                        >
+                            <option
+                                value=""
+                                {{ empty(old('os')) ? 'selected' : '' }}
+                            >@lang('messages.select_os')</option>
+
+                            <option
+                                value="Windows"
+                                {{ old('os') == 'Windows' ? 'selected' : '' }}
+                            >Windows</option>
+
+                            <option
+                                value="Linux"
+                                {{ old('os') == 'Linux' ? 'selected' : '' }}
+                            >Linux</option>
+
+                            <option
+                                value="macOS"
+                                {{ old('os') == 'macOS' ? 'selected' : '' }}
+                            >macOS</option>
+
+                            <option
+                                value="Chrome OS"
+                                {{ old('os') == 'Chrome OS' ? 'selected' : '' }}
+                            >Chrome OS</option>
                         </select>
+
+                        @error('os')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('os') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -129,7 +386,19 @@
                 <div class="form-row">
                     <div class="form-group col-12">
                         <label for="description">@lang('messages.description')</label>
-                        <textarea class="form-control" id="description" rows="4" placeholder="@lang('messages.description')"></textarea>
+                        <textarea
+                            class="form-control @error('description') is-invalid @enderror"
+                            id="description"
+                            name="description"
+                            rows="4"
+                            placeholder="@lang('messages.description')"
+                        >{{ old('description') }}</textarea>
+
+                        @error('description')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('description') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -140,27 +409,58 @@
                     <div class="form-group col-md-6">
                         <label for="price">@lang('messages.price')*</label>
                         <div class="input-group">
-                            <input type="number" class="form-control" id="price" placeholder="@lang('messages.price')">
+                            <input
+                                type="number"
+                                class="form-control @error('price') is-invalid @enderror"
+                                id="price"
+                                name="price"
+                                value="{{ old('price') }}"
+                                placeholder="@lang('messages.price')"
 
+                            >
                             <div class="input-group-append">
                                  <span class="input-group-text">&euro;</span>
                             </div>
+
+                            @error('price')
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('price') }}
+                                </div>
+                            @enderror
                         </div>
+
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="damage">@lang('messages.damage')*</label>
-                        <select class="form-control" id="damage">
-                            <option value="no" selected>No</option>
-                            <option value="yes">Yes</option>
+                        <select
+                            class="form-control @error('damage') is-invalid @enderror"
+                            id="damage"
+                            name="damage"
+                        >
+                            <option
+                                value="0"
+                                {{ !old('damage') ? 'selected' : '' }}
+                            >No</option>
+
+                            <option
+                                value="1"
+                                {{ old('damage') ? 'selected' : '' }}
+                            >Yes</option>
                         </select>
+
+                        @error('damage')
+                            <div class="invalid-feedback">
+                                {{ $errors->first('damage') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
                 <hr>
 
                 <div class="form-row mt-4">
-                    <div class="form-group col-md-4 offset-md-4">
+                    <div class="form-group col-md-4 offset-md-4 mb-0">
                         <button type="submit" class="btn btn-primary w-100">Submit</button>
                     </div>
                 </div>
