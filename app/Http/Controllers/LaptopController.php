@@ -65,7 +65,6 @@ class LaptopController extends Controller
 
     public function show(Laptop $laptop)
     {
-        //['id', 'user_id', 'description', 'views', 'created_at', 'updated_at']
         $laptop->timestamps = false;
         $laptop->increment('views');
 

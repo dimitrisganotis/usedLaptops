@@ -110,10 +110,12 @@
                             <table class="table table-striped table-bordered mb-0 text-uppercase">
                                 <tbody>
                                     @foreach($storage as $storageInfo)
-                                        <tr>
-                                            <th>{{ $storageInfo['type'] }}</th>
-                                            <td>{{ $storageInfo['size'].$storageInfo['unit'] }}</td>
-                                        </tr>
+                                        @if(!empty($storageInfo))
+                                            <tr>
+                                                <th>{{ $storageInfo['type'] }}</th>
+                                                <td>{{ $storageInfo['size'].$storageInfo['unit'] }}</td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>

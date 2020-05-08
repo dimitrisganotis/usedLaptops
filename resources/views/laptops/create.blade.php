@@ -230,24 +230,24 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <select
-                                    class="form-control"
+                                    class="form-control @error('storage1.type') is-invalid @enderror"
                                     name="storage1[type]"
                                 >
                                     <option
-                                        value="ssd"
-                                        {{ old('storage1.type') == 'ssd' ? 'selected' : '' }}
+                                        value="SSD"
+                                        {{ old('storage1.type') == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
 
                                     <option
-                                        value="hdd"
-                                        {{ old('storage1.type') == 'hdd' ? 'selected' : '' }}
+                                        value="HDD"
+                                        {{ old('storage1.type') == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
                                 </select>
                             </div>
 
                             <input
                                 type="number"
-                                class="form-control @error('storage1') is-invalid @enderror"
+                                class="form-control @error('storage1') is-invalid @enderror @error('storage1.size') is-invalid @enderror"
                                 id="storage1"
                                 name="storage1[size]"
                                 value="{{ old('storage1.size') }}"
@@ -256,7 +256,7 @@
 
                             <div class="input-group-append">
                                 <select
-                                    class="form-control"
+                                    class="form-control @error('storage1.unit') is-invalid @enderror"
                                     name="storage1[unit]"
                                 >
                                     <option
@@ -273,7 +273,15 @@
 
                             @error('storage1')
                                 <div class="invalid-feedback">
-                                    Please provide valid storage. {{ $errors->first('storage1') }}
+                                    {{ $errors->first('storage1') }}
+                                </div>
+                            @enderror
+
+                            @error('storage1.*')
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('storage1.type') }}
+                                    {{ $errors->first('storage1.size') }}
+                                    {{ $errors->first('storage1.unit') }}
                                 </div>
                             @enderror
                         </div>
@@ -284,24 +292,24 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <select
-                                    class="form-control"
+                                    class="form-control @error('storage2.type') is-invalid @enderror"
                                     name="storage2[type]"
                                 >
                                     <option
-                                        value="hdd"
-                                        {{ old('storage2.type') == 'hdd' ? 'selected' : '' }}
+                                        value="HDD"
+                                        {{ old('storage2.type') == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
 
                                     <option
-                                        value="ssd"
-                                        {{ old('storage2.type') == 'ssd' ? 'selected' : '' }}
+                                        value="SSD"
+                                        {{ old('storage2.type') == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
                                 </select>
                             </div>
 
                             <input
                                 type="number"
-                                class="form-control @error('storage2') is-invalid @enderror"
+                                class="form-control @error('storage2') is-invalid @enderror @error('storage2.size') is-invalid @enderror"
                                 id="storage2"
                                 name="storage2[size]"
                                 value="{{ old('storage2.size') }}"
@@ -310,7 +318,7 @@
 
                             <div class="input-group-append">
                                 <select
-                                    class="form-control"
+                                    class="form-control @error('storage2.unit') is-invalid @enderror"
                                     name="storage2[unit]"
                                 >
                                     <option
@@ -327,7 +335,15 @@
 
                             @error('storage2')
                                 <div class="invalid-feedback">
-                                    Please provide valid storage. {{ $errors->first('storage2') }}
+                                    {{ $errors->first('storage2') }}
+                                </div>
+                            @enderror
+
+                            @error('storage2.*')
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('storage2.type') }}
+                                    {{ $errors->first('storage2.size') }}
+                                    {{ $errors->first('storage2.unit') }}
                                 </div>
                             @enderror
                         </div>
