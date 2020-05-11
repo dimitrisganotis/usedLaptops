@@ -20,25 +20,12 @@ class LaptopsViewModel extends ViewModel
         return $this->laptop->brand . ' ' . $this->laptop->model . ($this->laptop->year ? ' (' . $this->laptop->year . ') ' : '');
     }
 
-    public function diffFromNow()
-    {
-        $updatedAt = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this->laptop->updated_at);
-        $now = \Carbon\Carbon::now();
-
-        if( $updatedAt->diffInMinutes($now) < 60 ) {
-            return $updatedAt->diffInMinutes($now) <= 1 ? 'Now' : $updatedAt->diffInMinutes($now).' mins ago';
-        } else if(  $updatedAt->diffInHours($now) < 24 ) {
-            return $updatedAt->diffInHours($now) <= 1 ? 'An hour ago' : $updatedAt->diffInHours($now).' hours ago';
-        } else if(  $updatedAt->diffInDays($now) < 7 ) {
-            return $updatedAt->diffInDays($now) <= 1 ? 'A day ago' : $updatedAt->diffInDays($now).' days ago';
-        } else {
-            return $updatedAt->format('jS \\of F Y');
-        }
-    }
-
     public function storage()
     {
         //dd($this->laptop->storage1);
-        return [$this->laptop->storage1, $this->laptop->storage2];
+        return [
+            $this->laptop->storage1,
+            $this->laptop->storage2,
+        ];
     }
 }

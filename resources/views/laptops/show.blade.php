@@ -37,8 +37,7 @@
                         <div class="p-2 p-lg-4 basic-laptop-info">
                             <p class="mb-0"><strong class="text-uppercase">Views:</strong> {{ $laptop->views }}</p>
                             <p class="mb-0"><strong class="text-uppercase">Damage:</strong> {{ $laptop->damage ? 'Yes' : 'No' }}</p>
-                            <p class="mb-0"><strong class="text-uppercase">Date:</strong> {{ $diffFromNow }}</p>
-
+                            <p class="mb-0"><strong class="text-uppercase">Date:</strong> {{ $laptop->created_at->diffForHumans() }}</p>
                             <div class="text-center bg-primary text-white p-3 mt-3 font-weight-bold price">
                                 {{ $laptop->price }}&euro;
                             </div>
@@ -57,6 +56,15 @@
 
                 <a class="btn btn-secondary mt-3" href="mailto:{{ $laptop->user->email }}?subject=usedLaptops&body={{ url()->current() }}">Contact Seller</a>
             </div>
+
+            @if($laptop->user->id == Auth::id())
+                <div class="bg-white border text-center p-3 mt-3">
+                    <h4 class="mb-3">Actions</h4>
+
+                    <a class="btn btn-primary" href="{{ url("/laptops/{$laptop->id}/edit") }}">Edit</a>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -104,13 +112,13 @@
                         @endif
                     @endforeach
 
-                    @if(count($storage[0]) > 0 || count($storage[1]) > 0)
+                    @if(!is_null($laptop->storage1) || !is_null($laptop->storage2))
                         <th scope="row">storage</th>
                         <td>
                             <table class="table table-striped table-bordered mb-0 text-uppercase">
                                 <tbody>
                                     @foreach($storage as $storageInfo)
-                                        @if(!empty($storageInfo))
+                                        @if(!is_null($storageInfo))
                                             <tr>
                                                 <th>{{ $storageInfo['type'] }}</th>
                                                 <td>{{ $storageInfo['size'].$storageInfo['unit'] }}</td>
@@ -126,5 +134,32 @@
         </div>
     </div>
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Are you sure?</h5>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body text-center">
+            This action cannot be undone. This will permanently delete the laptop.
+        </div>
+
+        <div class="modal-footer">
+            <form method="POST" action="/laptops/{{$laptop->id}}" class="w-100">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+
+                <button type="submit" class="btn btn-danger w-100">Delete Now</button>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

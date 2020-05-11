@@ -50,30 +50,33 @@ class LaptopController extends Controller
         $title = 'Post Laptop';
         $brands = json_decode(Storage::get('brands.json'));
 
-        return view('laptops.create', [
-            'title' => $title,
-            'brands' => $brands,
-        ]);
+        return view('laptops.create', compact(['title', 'brands']));
     }
 
     public function store(StoreLaptop $request)
     {
         Laptop::create($request->validated());
 
-        return redirect('/laptops');
+        return redirect('/laptops')->with('status', 'Laptop added!');
     }
 
     public function show(Laptop $laptop)
     {
         $laptop->timestamps = false;
         $laptop->increment('views');
+        $laptop->timestamps = true;
+
+        //var_dump($laptop->created_at); die;
 
         return view('laptops.show', new LaptopsViewModel($laptop));
     }
 
     public function edit($id)
     {
-        //
+        $title = 'Post Laptop';
+        $brands = json_decode(Storage::get('brands.json'));
+
+        return view('laptops.create', compact(['title', 'brands']));
     }
 
     public function update(Request $request, $id)
@@ -83,10 +86,13 @@ class LaptopController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Laptop $laptop)
     {
-        /*$users = User::findOrFail($id);
-        $users->delete();
-        return Redirect::route('comics.users' , compact('users'));*/
+        if($laptop->user->id != Auth::id())
+            abort(403, 'Unauthorized action.');
+
+        Laptop::destroy($laptop->id);
+
+        return redirect('/laptops')->with('status', 'Laptop deleted!');
     }
 }

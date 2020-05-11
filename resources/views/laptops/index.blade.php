@@ -79,24 +79,20 @@
                 </div>
             </div>
 
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <div class="row row-cols-1 row-cols-md-2">
                 @foreach( $laptops as $laptop )
                     @php
                         // Display only 15 characters of laptop's brand and model
                         $laptopBrandModel = Illuminate\Support\Str::limit($laptop->brand.' '.$laptop->model, 20);
-
-                        $updated_at = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $laptop->updated_at);
-                        $now = \Carbon\Carbon::now();
-
-                        if( $updated_at->diffInMinutes($now) < 60 ) {
-                            $diff_from_now = $updated_at->diffInMinutes($now) <= 1 ? 'Now' : $updated_at->diffInMinutes($now).' mins ago';
-                        } else if(  $updated_at->diffInHours($now) < 24 ) {
-                            $diff_from_now = $updated_at->diffInHours($now) <= 1 ? 'An hour ago' : $updated_at->diffInHours($now).' hours ago';
-                        } else if(  $updated_at->diffInDays($now) < 7 ) {
-                            $diff_from_now = $updated_at->diffInDays($now) <= 1 ? 'A day ago' : $updated_at->diffInDays($now).' days ago';
-                        } else {
-                            $diff_from_now = $updated_at->format('jS \\of F Y');
-                        }
 
                         $laptopUrl = url("/laptops/{$laptop->id}");
                     @endphp
@@ -120,11 +116,7 @@
                                     {{ $laptop->price }} &euro;
                                 </p>
 
-                                @php
-
-                                @endphp
-
-                                <p class="card-text"><small class="text-muted">{{ $diff_from_now }}</small></p>
+                                <p class="card-text"><small class="text-muted">{{ $laptop->created_at->diffForHumans() }}</small></p>
                             </div>
                         </div>
                     </div>
@@ -140,4 +132,14 @@
     </div>
 
 </div>
+@endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 3000);
+        });
+    </script>
 @endsection
