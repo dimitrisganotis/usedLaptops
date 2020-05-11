@@ -5,18 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\ViewModels\LaptopsViewModel;
-use App\{ User, Laptop };
 use App\Http\Requests\StoreLaptop;
+use App\{ User, Laptop };
 use Auth;
-use Illuminate\Support\Facades\DB;
 
 class LaptopController extends Controller
 {
-    /**
-     * Instantiate a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //$this->middleware('auth')->except(['index', 'show']);
@@ -66,24 +60,28 @@ class LaptopController extends Controller
         $laptop->increment('views');
         $laptop->timestamps = true;
 
-        //var_dump($laptop->created_at); die;
-
         return view('laptops.show', new LaptopsViewModel($laptop));
     }
 
-    public function edit($id)
+    public function edit(Laptop $laptop)
     {
-        $title = 'Post Laptop';
+        if($laptop->user->id != Auth::id())
+            abort(403, 'Unauthorized action.');
+
+        $title = 'Edit Laptop';
         $brands = json_decode(Storage::get('brands.json'));
 
-        return view('laptops.create', compact(['title', 'brands']));
+        return view('laptops.edit', compact(['title', 'brands', 'laptop']));
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreLaptop $request, Laptop $laptop)
     {
-        Laptop::create([
+        if($laptop->user->id != Auth::id())
+            abort(403, 'Unauthorized action.');
 
-        ]);
+        $laptop->update($request->validated());
+
+        return redirect('/laptops/'.$laptop->id)->with('status', 'Laptop updated!');
     }
 
     public function destroy(Laptop $laptop)

@@ -7,20 +7,21 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('messages.home')</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{ $title }} [ {{ $laptop->brand . ' ' . $laptop->model . ($laptop->year ? ' (' . $laptop->year . ') ' : '') }} ]</li>
         </ol>
     </nav>
 
     <div class="row mx-0 mt-4">
 
         <div class="col-md-8 offset-md-2 p-0">
-            <form method="POST" action="/laptops">
+            <form method="POST" action="/laptops/{{$laptop->id}}">
                 @csrf
+                {{ method_field('PATCH') }}
 
                 <input
                     type="hidden"
                     name="user_id"
-                    value="{{ Auth::user()->id }}"
+                    value="{{ $laptop->user->id }}"
                 >
 
                 <!-- Laptop -->
@@ -36,14 +37,13 @@
                             <option
                                 value=""
                                 disabled
-                                {{ empty(old('brand')) ? 'selected' : '' }}
                             >@lang('messages.select_brand')</option>
 
                             @foreach( $brands as $brand )
                                 <option
                                     value="{{ $brand }}"
                                     title="{{ $brand }}"
-                                    {{ old('brand') == $brand ? 'selected' : '' }}
+                                    {{ $laptop->brand == $brand ? 'selected' : '' }}
                                 >{{ $brand }}</option>
                             @endforeach
                         </select>
@@ -63,7 +63,7 @@
                             id="model"
                             name="model"
                             placeholder="@lang('messages.model')"
-                            value="{{ old('model') }}"
+                            value="{{ $laptop->model }}"
                             required
                         >
 
@@ -81,7 +81,7 @@
                             class="form-control @error('year') is-invalid @enderror"
                             id="year"
                             name="year"
-                            value="{{ old('year') }}"
+                            value="{{ $laptop->year }}"
                             placeholder="@lang('messages.year')"
                             min="1970"
                             max="{{ \Carbon\Carbon::tomorrow()->year }}"
@@ -110,22 +110,21 @@
                             <option
                                 value=""
                                 disabled
-                                {{ empty(old('cpuBrand')) ? 'selected' : '' }}
                             >@lang('messages.select_brand')</option>
 
                             <option
                                 value="Intel"
-                                {{ old('cpuBrand') == 'Intel' ? 'selected' : '' }}
+                                {{ $laptop->cpuBrand == 'Intel' ? 'selected' : '' }}
                             >Intel</option>
 
                             <option
                                 value="AMD"
-                                {{ old('cpuBrand') == 'AMD' ? 'selected' : '' }}
+                                {{ $laptop->cpuBrand == 'AMD' ? 'selected' : '' }}
                             >AMD</option>
 
                             <option
                                 value="Other"
-                                {{ old('cpuBrand') == 'Other' ? 'selected' : '' }}
+                                {{ $laptop->cpuBrand == 'Other' ? 'selected' : '' }}
                             >@lang('messages.other')</option>
                         </select>
 
@@ -143,7 +142,7 @@
                             class="form-control @error('cpuModel') is-invalid @enderror"
                             id="cpuModel"
                             name="cpuModel"
-                            value="{{ old('cpuModel') }}"
+                            value="{{ $laptop->cpuModel }}"
                             placeholder="@lang('messages.cpuModel')"
                         >
 
@@ -161,7 +160,7 @@
                             class="form-control @error('cpuCores') is-invalid @enderror"
                             id="cpuCores"
                             name="cpuCores"
-                            value="{{ old('cpuCores') }}"
+                            value="{{ $laptop->cpuCores }}"
                             placeholder="@lang('messages.cpuCores')"
                             min="1"
                             max="32"
@@ -181,7 +180,7 @@
                             class="form-control @error('cpuFrequency') is-invalid @enderror"
                             id="cpuFrequency"
                             name="cpuFrequency"
-                            value="{{ old('cpuFrequency') }}"
+                            value="{{ $laptop->cpuFrequency }}"
                             placeholder="@lang('messages.cpuFrequency_ghz')"
                             min="0.0"
                             max="5.0"
@@ -208,7 +207,7 @@
                                 class="form-control @error('ramSize') is-invalid @enderror"
                                 id="ramSize"
                                 name="ramSize"
-                                value="{{ old('ramSize') }}"
+                                value="{{ $laptop->ramSize }}"
                                 placeholder="Size"
                                 min="1"
                                 max="32"
@@ -236,12 +235,12 @@
                                 >
                                     <option
                                         value="SSD"
-                                        {{ old('storage1.type') == 'SSD' ? 'selected' : '' }}
+                                        {{ $laptop->storage1['type'] == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
 
                                     <option
                                         value="HDD"
-                                        {{ old('storage1.type') == 'HDD' ? 'selected' : '' }}
+                                        {{ $laptop->storage1['type'] == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
                                 </select>
                             </div>
@@ -251,7 +250,7 @@
                                 class="form-control @error('storage1') is-invalid @enderror @error('storage1.size') is-invalid @enderror"
                                 id="storage1"
                                 name="storage1[size]"
-                                value="{{ old('storage1.size') }}"
+                                value="{{ $laptop->storage1['size'] }}"
                                 placeholder="Size"
                             >
 
@@ -262,12 +261,12 @@
                                 >
                                     <option
                                         value="GB"
-                                        {{ old('storage1.unit') == 'GB' ? 'selected' : '' }}
+                                        {{ $laptop->storage1['unit'] == 'GB' ? 'selected' : '' }}
                                     >GB</option>
 
                                     <option
                                         value="TB"
-                                        {{ old('storage1.unit') == 'TB' ? 'selected' : '' }}
+                                        {{ $laptop->storage1['unit'] == 'TB' ? 'selected' : '' }}
                                     >TB</option>
                                 </select>
                             </div>
@@ -298,12 +297,12 @@
                                 >
                                     <option
                                         value="HDD"
-                                        {{ old('storage2.type') == 'HDD' ? 'selected' : '' }}
+                                        {{ $laptop->storage2['type'] == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
 
                                     <option
                                         value="SSD"
-                                        {{ old('storage2.type') == 'SSD' ? 'selected' : '' }}
+                                        {{ $laptop->storage2['type'] == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
                                 </select>
                             </div>
@@ -313,7 +312,7 @@
                                 class="form-control @error('storage2') is-invalid @enderror @error('storage2.size') is-invalid @enderror"
                                 id="storage2"
                                 name="storage2[size]"
-                                value="{{ old('storage2.size') }}"
+                                value="{{ $laptop->storage2['size'] }}"
                                 placeholder="Size"
                             >
 
@@ -324,12 +323,12 @@
                                 >
                                     <option
                                         value="GB"
-                                        {{ old('storage2.unit') == 'GB' ? 'selected' : '' }}
+                                        {{ $laptop->storage2['unit'] == 'GB' ? 'selected' : '' }}
                                     >GB</option>
 
                                     <option
                                         value="TB"
-                                        {{ old('storage2.unit') == 'TB' ? 'selected' : '' }}
+                                        {{ $laptop->storage2['unit'] == 'TB' ? 'selected' : '' }}
                                     >TB</option>
                                 </select>
                             </div>
@@ -365,27 +364,26 @@
                         >
                             <option
                                 value=""
-                                {{ empty(old('os')) ? 'selected' : '' }}
                             >@lang('messages.select_os')</option>
 
                             <option
                                 value="Windows"
-                                {{ old('os') == 'Windows' ? 'selected' : '' }}
+                                {{ $laptop->os == 'Windows' ? 'selected' : '' }}
                             >Windows</option>
 
                             <option
                                 value="Linux"
-                                {{ old('os') == 'Linux' ? 'selected' : '' }}
+                                {{ $laptop->os == 'Linux' ? 'selected' : '' }}
                             >Linux</option>
 
                             <option
                                 value="macOS"
-                                {{ old('os') == 'macOS' ? 'selected' : '' }}
+                                {{ $laptop->os == 'macOS' ? 'selected' : '' }}
                             >macOS</option>
 
                             <option
                                 value="Chrome OS"
-                                {{ old('os') == 'Chrome OS' ? 'selected' : '' }}
+                                {{ $laptop->os == 'Chrome OS' ? 'selected' : '' }}
                             >Chrome OS</option>
                         </select>
 
@@ -409,7 +407,7 @@
                             name="description"
                             rows="4"
                             placeholder="@lang('messages.description')"
-                        >{{ old('description') }}</textarea>
+                        >{{ $laptop->description }}</textarea>
 
                         @error('description')
                             <div class="invalid-feedback">
@@ -431,7 +429,7 @@
                                 class="form-control @error('price') is-invalid @enderror"
                                 id="price"
                                 name="price"
-                                value="{{ old('price') }}"
+                                value="{{ $laptop->price }}"
                                 placeholder="@lang('messages.price')"
                                 required
                             >
@@ -457,12 +455,12 @@
                         >
                             <option
                                 value="0"
-                                {{ !old('damage') ? 'selected' : '' }}
+                                {{ !$laptop->damage ? 'selected' : '' }}
                             >No</option>
 
                             <option
                                 value="1"
-                                {{ old('damage') ? 'selected' : '' }}
+                                {{ $laptop->damage ? 'selected' : '' }}
                             >Yes</option>
                         </select>
 

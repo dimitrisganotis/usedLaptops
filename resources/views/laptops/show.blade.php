@@ -61,8 +61,17 @@
                 <div class="bg-white border text-center p-3 mt-3">
                     <h4 class="mb-3">Actions</h4>
 
-                    <a class="btn btn-primary" href="{{ url("/laptops/{$laptop->id}/edit") }}">Edit</a>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <a class="btn btn-primary" href="{{ url("/laptops/{$laptop->id}/edit") }}"><i class="fas fa-edit"></i> Edit</a>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            @endif
+
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             @endif
         </div>
@@ -113,7 +122,7 @@
                     @endforeach
 
                     @if(!is_null($laptop->storage1) || !is_null($laptop->storage2))
-                        <th scope="row">storage</th>
+                        <th scope="row" style="vertical-align: inherit;">storage</th>
                         <td>
                             <table class="table table-striped table-bordered mb-0 text-uppercase">
                                 <tbody>
@@ -162,4 +171,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 3000);
+        });
+    </script>
 @endsection

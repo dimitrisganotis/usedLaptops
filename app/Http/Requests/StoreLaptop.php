@@ -75,7 +75,7 @@ class StoreLaptop extends FormRequest
 
             'os' => 'required|in:Windows,Linux,macOS,Chrome OS',
             'damage' => 'required|boolean',
-            'price' => 'required|integer|min:1|max:5000',
+            'price' => 'required|numeric|min:1|max:5000',
             'description' => 'nullable|min:3'
         ];
     }
