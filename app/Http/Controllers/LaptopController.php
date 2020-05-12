@@ -19,22 +19,45 @@ class LaptopController extends Controller
     public function index(Request $request)
     {
         $title = 'Browse Laptops';
-        //$laptops = empty($request->all()) ? Laptop::all() : Laptop::select('*');
         $laptops = Laptop::select('*');
         // $brands = Laptop::distinct()->pluck('brand');
         $brands = json_decode(Storage::get('brands.json'));
 
-        if( !empty($request->all()) ) {
-            if( !$request->input('page') || ( $request->input('page') && count($request->all()) > 1 ) ) {
-                foreach( $request->all() as $key => $value ) {
-                    $laptops->where($key, $value);
+        //dd($request->all());
+
+        if(!empty($request->all())) {
+            foreach($request->only(['brand', 'year', 'cpuBrand']) as $key => $value) {
+                if(empty($value))
+                    continue;
+
+                if(is_array($value)) {
+                    $laptops->whereIn($key, $value);
+                    continue;
                 }
+
+                $laptops->where($key, $value);
             }
+
+            if(!empty($request->search)) {
+                $laptops->where($key, 'like', '%'.$value.'%');
+            }
+        }
+
+        switch($request->sort) {
+            case 'latest':
+                $laptops->latest();
+                break;
+            case 'oldest':
+                $laptops->oldest();
+                break;
+            default:
+                $laptops->latest();
+                break;
         }
 
         return view('laptops.index', [
             'title' => $title,
-            'laptops' => $laptops->latest()->paginate(6),
+            'laptops' => $laptops->paginate(6),
             'brands' => $brands
         ]);
     }

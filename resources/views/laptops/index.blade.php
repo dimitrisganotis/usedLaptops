@@ -14,72 +14,123 @@
     <div class="row mx-0 mt-4">
 
         <div class="col-md-3 border-right pl-0">
+            <form action="/laptops">
+                @foreach(request()->only(['search', 'sort']) as $key => $value)
+                    @if(empty($value))
+                        @continue
+                    @endif
 
-            <div class="card mb-4">
-                <div class="card-header">Brand</div>
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
 
-                <div class="card-body py-0">
-                    <div class="form-group">
-                        <label for=""></label>
-                        <select class="form-control" id="" size="5" multiple>
-                            @foreach( $brands as $brand )
-                                <option>{{ $brand }}</option>
-                            @endforeach
-                        </select>
+                <div class="card mb-4">
+                    <div class="card-header">Brand</div>
+
+                    <div class="card-body py-0">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <select class="form-control" name="brand[]" id="" size="5" multiple>
+                                @foreach( $brands as $brand )
+                                    <option
+                                        value="{{ $brand }}"
+                                        {{ !is_null(request()->brand) && in_array($brand, request()->brand) ? 'selected' : '' }}
+                                    >{{ $brand }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card mb-4">
-                <div class="card-header">Year</div>
+                <div class="card mb-4">
+                    <div class="card-header">Year</div>
 
-                <div class="card-body py-0">
-                    <div class="form-group">
-                        <label for=""></label>
-                        <input type="text" class="form-control" name="" placeholder="">
+                    <div class="card-body py-0">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <input type="number" class="form-control" name="year" value="{{ request()->year }}" placeholder="">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card mb-4">
-                <div class="card-header">CPU Brand</div>
+                <div class="card mb-4">
+                    <div class="card-header">CPU Brand</div>
 
-                <div class="card-body py-0">
-                    <div class="form-group">
-                        <label for=""></label>
-                        <select class="form-control" id="" size="3" multiple>
-                            <option>Intel</option>
-                            <option>AMD</option>
-                            <option>Other</option>
-                        </select>
+                    <div class="card-body py-0">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <select class="form-control" name="cpuBrand[]" id="" size="3" multiple>
+                                <option
+                                    value="Intel"
+                                    {{ request()->cpuBrand == 'Intel' ? 'selected' : '' }}
+                                >Intel</option>
+
+                                <option
+                                    value="AMD"
+                                    {{ request()->cpuBrand == 'AMD' ? 'selected' : '' }}
+                                >AMD</option>
+
+                                <option
+                                    value="Other"
+                                    {{ request()->cpuBrand == 'Other' ? 'selected' : '' }}
+                                >Other</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+                <input type="submit" class="form-control">
+            </form>
         </div>
 
         <div id="laptops" class="col-md-9 pr-0">
-            <div class="d-flex justify-content-between mt-n4">
-                <div class="form-group">
-                    <label for=""></label>
-                    <input type="text" class="form-control" name="" placeholder="Search">
+            <form action="/laptops">
+                @foreach(request()->only(['brand', 'year', 'cpuBrand']) as $key => $value)
+                    @if(empty($value))
+                        @continue
+                    @endif
+
+                    @if(is_array($value))
+                        @foreach($value as $arrayValue)
+                            <input type="hidden" name="{{ $key }}[]" value="{{ $arrayValue }}">
+                        @endforeach
+                        @continue
+                    @endif
+
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
+
+                <div class="d-flex justify-content-between mt-n4">
+                    <div class="form-group">
+                        <label for=""></label>
+                        <input type="text" class="form-control" name="search" placeholder="Search" value="{{ request()->search }}">
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $laptops->appends(request()->except('page'))->links() }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for=""></label>
+                        <select class="form-control" name="sort">
+                            <option disabled>Order By</option>
+
+                            <option
+                                value="latest"
+                                {{ request()->sort == 'latest' ? 'selected' : '' }}
+                            >Latest</option>
+
+                            <option
+                                value="oldest"
+                                {{ request()->sort == 'oldest' ? 'selected' : '' }}
+                            >Oldest</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="mt-4">
-                    {{ $laptops->links() }}
-                </div>
+                <input type="submit" class="form-control mb-3">
+            </form>
 
-                <div class="form-group">
-                    <label for=""></label>
-                    <select class="form-control" name="">
-                        <option selected disabled>Sort By</option>
-                        <option>ASC</option>
-                        <option>DESC</option>
-                    </select>
-                </div>
-            </div>
-
-            @if (session('status'))
+            @if(session('status'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('status') }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -89,7 +140,7 @@
             @endif
 
             <div class="row row-cols-1 row-cols-md-2">
-                @foreach( $laptops as $laptop )
+                @foreach($laptops as $laptop)
                     @php
                         // Display only 15 characters of laptop's brand and model
                         $laptopBrandModel = Illuminate\Support\Str::limit($laptop->brand.' '.$laptop->model, 20);
