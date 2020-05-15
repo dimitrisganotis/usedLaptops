@@ -26,7 +26,7 @@ class LaptopController extends Controller
         //dd($request->all());
 
         if(!empty($request->all())) {
-            foreach($request->only(['brand', 'year', 'cpuBrand']) as $key => $value) {
+            foreach($request->only(['brand', 'cpuBrand', 'os']) as $key => $value) {
                 if(empty($value))
                     continue;
 
@@ -39,7 +39,9 @@ class LaptopController extends Controller
             }
 
             if(!empty($request->search)) {
-                $laptops->where($key, 'like', '%'.$value.'%');
+                $laptops->where('model', 'like', '%'.$request->search.'%');
+                $laptops->orWhere('year', 'like', '%'.$request->search.'%');
+                $laptops->orWhere('cpuModel', 'like', '%'.$request->search.'%');
             }
         }
 
