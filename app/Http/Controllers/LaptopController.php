@@ -74,7 +74,13 @@ class LaptopController extends Controller
 
     public function store(StoreLaptop $request)
     {
-        Laptop::create($request->validated());
+        $validatedInputs = $request->validated();
+
+        if($file = $request->file('photo')) {
+            $validatedInputs['photo'] = $file->store('public/uploads');
+        }
+
+        Laptop::create($validatedInputs);
 
         return redirect('/laptops')->with('status', 'Laptop added!');
     }
@@ -104,7 +110,14 @@ class LaptopController extends Controller
         if($laptop->user->id != Auth::id())
             abort(403, 'Unauthorized action.');
 
-        $laptop->update($request->validated());
+        $validatedInputs = $request->validated();
+
+        if($file = $request->file('photo')) {
+            $laptop->photo ? Storage::delete($laptop->photo) : null;
+            $validatedInputs['photo'] = $file->store('public/uploads');
+        }
+
+        $laptop->update($validatedInputs);
 
         return redirect('/laptops/'.$laptop->id)->with('status', 'Laptop updated!');
     }
@@ -114,6 +127,7 @@ class LaptopController extends Controller
         if($laptop->user->id != Auth::id())
             abort(403, 'Unauthorized action.');
 
+        $laptop->photo ? Storage::delete($laptop->photo) : null;
         Laptop::destroy($laptop->id);
 
         return redirect('/laptops')->with('status', 'Laptop deleted!');

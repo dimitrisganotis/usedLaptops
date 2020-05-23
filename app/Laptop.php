@@ -22,6 +22,7 @@ class Laptop extends Model
         'damage',
         'price',
         'description',
+        'photo'
     ];
 
     // protected $guarded = []; mass assignment for all

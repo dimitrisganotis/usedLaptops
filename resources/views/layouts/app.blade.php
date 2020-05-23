@@ -39,7 +39,7 @@
                         <li class="nav-item {{ Route::currentRouteName() == 'laptops.index' ? 'active' : '' }}">
                             <a href="{{ route('laptops.index') }}" class="nav-link">Browse Laptops</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ Route::currentRouteName() == 'laptops.create' ? 'active' : '' }}">
                             <a href="{{ route('laptops.create') }}" class="nav-link @guest disabled @endguest">Post Laptop</a>
                         </li>
                     </ul>
@@ -63,6 +63,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        Dashboard
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -157,7 +157,7 @@
                     @endforeach
 
                     <div class="form-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search" value="{{ request()->search }}">
+                        <input type="text" class="form-control" name="search" placeholder="Model/ Year /CPU Model" value="{{ request()->search }}">
                     </div>
                 </form>
 
@@ -208,40 +208,46 @@
                 </div>
             @endif
 
-            <div class="row row-cols-1 row-cols-md-2">
-                @foreach($laptops as $laptop)
-                    @php
-                        // Display only 15 characters of laptop's brand and model
-                        $laptopBrandModel = Illuminate\Support\Str::limit($laptop->brand.' '.$laptop->model, 20);
+            @if($laptops->isEmpty())
+                <p class="text-center my-4">No laptops found</p>
+            @else
+                <div class="row row-cols-1 row-cols-md-2">
+                    @foreach($laptops as $laptop)
+                        @php
+                            // Display only 15 characters of laptop's brand and model
+                            $laptopBrandModel = Illuminate\Support\Str::limit($laptop->brand.' '.$laptop->model, 20);
 
-                        $laptopUrl = url("/laptops/{$laptop->id}");
-                    @endphp
+                            $laptopUrl = url("/laptops/{$laptop->id}");
 
-                    <div class="col mb-4">
-                        <div class="card text-center">
-                            <a href="{{ $laptopUrl }}">
-                                <img src="{{ asset('image/usedlaptops.png') }}" class="card-img-top" alt="Laptop image">
-                            </a>
+                            $photo = $laptop->photo ? str_replace('public', 'storage', $laptop->photo) : null;
+                        @endphp
 
-                            <div class="card-body">
-                                <h5 class="card-title font-weight-bold">
-                                    <a href="{{ $laptopUrl }}">{{ $laptopBrandModel }} <br> {!! $laptop->year ? '('.$laptop->year.')' : '&nbsp;' !!}</a>
-                                </h5>
+                        <div class="col mb-4">
+                            <div class="card text-center">
+                                <a href="{{ $laptopUrl }}">
+                                    <img src="{{ $photo ? asset($photo) : asset('image/usedlaptops.png') }}" class="card-img-top mt-4" alt="Laptop image">
+                                </a>
 
-                                <p class="card-text">
-                                    {{ $laptop->user->name }}
-                                </p>
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bold">
+                                        <a href="{{ $laptopUrl }}">{{ $laptopBrandModel }} <br> {!! $laptop->year ? '('.$laptop->year.')' : '&nbsp;' !!}</a>
+                                    </h5>
 
-                                <p class="card-text lead">
-                                    {{ $laptop->price }} &euro;
-                                </p>
+                                    <p class="card-text">
+                                        {{ $laptop->user->name }}
+                                    </p>
 
-                                <p class="card-text"><small class="text-muted">{{ $laptop->created_at->diffForHumans() }}</small></p>
+                                    <p class="card-text lead">
+                                        {{ $laptop->price }} &euro;
+                                    </p>
+
+                                    <p class="card-text"><small class="text-muted">{{ $laptop->created_at->diffForHumans() }}</small></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @endif
 
             <div class="d-flex justify-content-center">
                 {{ $laptops->appends(request()->except('page'))->links() }}

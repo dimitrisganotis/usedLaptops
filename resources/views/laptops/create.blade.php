@@ -14,7 +14,7 @@
     <div class="row mx-0 mt-4">
 
         <div class="col-md-8 offset-md-2 p-0">
-            <form method="POST" action="/laptops">
+            <form method="POST" action="/laptops" enctype="multipart/form-data">
                 @csrf
 
                 <input
@@ -471,6 +471,16 @@
                                 {{ $errors->first('damage') }}
                             </div>
                         @enderror
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="photo">Upload Photo</label>
+                    <div class="form-group custom-file">
+                        <input type="file" name="photo" class="custom-file-input" id="photo">
+                        <label class="custom-file-label" for="photo">Choose file...</label>
                     </div>
                 </div>
 
