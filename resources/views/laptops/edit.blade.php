@@ -235,12 +235,12 @@
                                 >
                                     <option
                                         value="SSD"
-                                        {{ $laptop->storage1['type'] == 'SSD' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage1['type']) && $laptop->storage1['type'] == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
 
                                     <option
                                         value="HDD"
-                                        {{ $laptop->storage1['type'] == 'HDD' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage1['type']) && $laptop->storage1['type'] == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
                                 </select>
                             </div>
@@ -250,7 +250,7 @@
                                 class="form-control @error('storage1') is-invalid @enderror @error('storage1.size') is-invalid @enderror"
                                 id="storage1"
                                 name="storage1[size]"
-                                value="{{ $laptop->storage1['size'] }}"
+                                value="{{ isset($laptop->storage1['size']) ? $laptop->storage1['size'] : '' }}"
                                 placeholder="Size"
                             >
 
@@ -261,12 +261,12 @@
                                 >
                                     <option
                                         value="GB"
-                                        {{ $laptop->storage1['unit'] == 'GB' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage1['unit']) && $laptop->storage1['unit'] == 'GB' ? 'selected' : '' }}
                                     >GB</option>
 
                                     <option
                                         value="TB"
-                                        {{ $laptop->storage1['unit'] == 'TB' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage1['unit']) && $laptop->storage1['unit'] == 'TB' ? 'selected' : '' }}
                                     >TB</option>
                                 </select>
                             </div>
@@ -297,12 +297,12 @@
                                 >
                                     <option
                                         value="HDD"
-                                        {{ $laptop->storage2['type'] == 'HDD' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage2['type']) && $laptop->storage2['type'] == 'HDD' ? 'selected' : '' }}
                                     >HDD</option>
 
                                     <option
                                         value="SSD"
-                                        {{ $laptop->storage2['type'] == 'SSD' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage2['type']) && $laptop->storage2['type'] == 'SSD' ? 'selected' : '' }}
                                     >SSD</option>
                                 </select>
                             </div>
@@ -312,7 +312,7 @@
                                 class="form-control @error('storage2') is-invalid @enderror @error('storage2.size') is-invalid @enderror"
                                 id="storage2"
                                 name="storage2[size]"
-                                value="{{ $laptop->storage2['size'] }}"
+                                value="{{ isset($laptop->storage2['size']) ? $laptop->storage2['size'] : '' }}"
                                 placeholder="Size"
                             >
 
@@ -323,12 +323,12 @@
                                 >
                                     <option
                                         value="GB"
-                                        {{ $laptop->storage2['unit'] == 'GB' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage2['unit']) && $laptop->storage2['unit'] == 'GB' ? 'selected' : '' }}
                                     >GB</option>
 
                                     <option
                                         value="TB"
-                                        {{ $laptop->storage2['unit'] == 'TB' ? 'selected' : '' }}
+                                        {{ isset($laptop->storage2['unit']) && $laptop->storage2['unit'] == 'TB' ? 'selected' : '' }}
                                     >TB</option>
                                 </select>
                             </div>
