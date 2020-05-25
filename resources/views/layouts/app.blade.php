@@ -90,7 +90,11 @@
         <footer class="mt-auto">
             <div class="container border-top py-3 text-center">
                 <p class="lead mb-0">{{ config('app.name', 'Laravel') }} &copy; {{ date('Y') }}</p>
-                <p><small>Developed by Dimitris Ganotis</small></p>
+                <p class="mb-1"><small>Developed by <a href="https://dimitrisganotis.gr/" style="color: #212529" target="_blank">Dimitris Ganotis</a></small></p>
+                <div>
+                    <a href="https://www.linkedin.com/in/dimitrisgan97/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="https://github.com/dimitrisganotis/usedLaptops/" target="_blank" title="GitHub" class="text-dark"><i class="fab fa-github-square fa-lg"></i></a>
+                </div>
             </div>
         </footer>
     </div>

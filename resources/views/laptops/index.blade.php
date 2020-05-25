@@ -13,7 +13,7 @@
 
     <div class="row mx-0 mt-4">
 
-        <div class="col-md-3 border-right pl-0">
+        <div class="col-md-3 border-md-right pl-0 pr-0 pr-md-3">
             <div class="card mb-4">
                 <div class="card-header mb-3">Brand</div>
 
@@ -138,8 +138,8 @@
             </div>
         </div>
 
-        <div id="laptops" class="col-md-9 pr-0">
-            <div class="d-flex justify-content-between mt-n4">
+        <div id="laptops" class="col-md-9 pl-0 pr-0 pl-md-3">
+            <div class="d-md-flex justify-content-between flex-wrap mt-n4">
                 <form action="/laptops" class="mt-4">
                     @foreach(request()->only(['brand', 'cpuBrand', 'os', 'sort']) as $key => $value)
                         @if(empty($value))
@@ -161,11 +161,11 @@
                     </div>
                 </form>
 
-                <div class="mt-4">
+                <div class="mt-4 d-flex justify-content-center">
                     {{ $laptops->appends(request()->except('page'))->links() }}
                 </div>
 
-                <form action="/laptops" class="mt-4">
+                <form action="/laptops" class="mt-0 mt-md-4">
                     @foreach(request()->only(['brand', 'cpuBrand', 'os', 'search']) as $key => $value)
                         @if(empty($value))
                             @continue

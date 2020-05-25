@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -46,6 +47,7 @@
 
             .title {
                 font-size: 5em;
+                margin-bottom: 15px;
             }
 
             .title a {
@@ -53,16 +55,31 @@
                 text-align: inherit;
                 color: inherit;
                 text-decoration: none;
+                margin-bottom: 20px;
+            }
+
+            .browse a {
+                color: #343fdc;
+                padding: 0 25px;
+                font-size: 1.3em;
+                font-weight: 600;
+                letter-spacing: .1rem;
+                text-decoration: none;
+                text-transform: uppercase;
             }
 
             .links > a {
                 color: #343fdc;
                 padding: 0 25px;
-                font-size: 1em;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
                 text-transform: uppercase;
+                font-size: 1.8em;
+            }
+
+            .auth_links > a {
+                font-size: 1.3em;
             }
 
             .m-b-md {
@@ -74,8 +91,12 @@
                     font-size: 4em;
                 }
 
+                .browse a {
+                    font-size: 1.15em;
+                }
+
                 .links > a {
-                    font-size: 0.9em;
+                    font-size: 1.3em;
                 }
             }
 
@@ -84,8 +105,13 @@
                     font-size: 3em!important;
                 }
 
+                .browse a {
+                    font-size: 1em;
+                }
+
                 .links > a {
-                    font-size: 0.8em;
+                    font-size: 1.1em;
+                    padding: 0 10px;
                 }
             }
         </style>
@@ -93,7 +119,7 @@
     <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
-                <div class="top-right links">
+                <div class="top-right links auth_links">
                     @auth
                         <a href="{{ url('/dashboard') }}">Dashboard</a>
                     @else
@@ -107,14 +133,18 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
+                <div class="title">
                     <a href="{{ route('laptops.index') }}">usedLaptops</a>
                 </div>
 
+                <div class="browse m-b-md">
+                    <a href="{{ route('laptops.index') }}">Browse</a>
+                </div>
+
                 <div class="links">
-                    <a href="https://dimitrisganotis.gr/" target="_blank">Portfolio</a>
-                    <a href="https://www.linkedin.com/in/dimitrisgan97/" target="_blank">LinkedIn</a>
-                    <a href="https://github.com/dimitrisganotis/usedLaptops/" target="_blank">GitHub</a>
+                    <a href="https://dimitrisganotis.gr/" target="_blank" title="Portfolio"><i class="fas fa-suitcase"></i></a>
+                    <a href="https://www.linkedin.com/in/dimitrisgan97/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/dimitrisganotis/usedLaptops/" target="_blank" title="GitHub"><i class="fab fa-github-square"></i></a>
                 </div>
             </div>
         </div>
