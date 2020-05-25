@@ -29,7 +29,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="p-2 p-lg-4">
-                            <img src="{{ $photo ? asset($photo) : asset('image/usedlaptops.png') }}" class="img-fluid" alt="Responsive image">
+                            <img src="{{ $photo ? asset($photo) : asset('image/usedLaptops.png') }}" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>
 

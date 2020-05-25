@@ -225,7 +225,7 @@
                         <div class="col mb-4">
                             <div class="card text-center">
                                 <a href="{{ $laptopUrl }}">
-                                    <img src="{{ $photo ? asset($photo) : asset('image/usedlaptops.png') }}" class="card-img-top mt-4" alt="Laptop image">
+                                    <img src="{{ $photo ? asset($photo) : asset('image/usedLaptops.png') }}" class="card-img-top mt-4" alt="Laptop image">
                                 </a>
 
                                 <div class="card-body">
