@@ -26,3 +26,4 @@ This is a rewrite of usedLaptops (v1.0). While i was learning the Laravel Framew
 * In the .env file, add database information to allow Laravel to connect to the database
 * Run `php artisan migrate`
 * Run `php artisan db:seed`
+* Run `php artisan storage:link`

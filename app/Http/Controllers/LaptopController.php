@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\ViewModels\LaptopsViewModel;
 use App\Http\Requests\StoreLaptop;
-use App\{ User, Laptop };
+use App\Laptop;
 use Auth;
 
 class LaptopController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     public function index(Request $request)
@@ -22,8 +22,6 @@ class LaptopController extends Controller
         $laptops = Laptop::select('*');
         // $brands = Laptop::distinct()->pluck('brand');
         $brands = json_decode(Storage::get('brands.json'));
-
-        //dd($request->all());
 
         if(!empty($request->all())) {
             foreach($request->only(['brand', 'cpuBrand', 'os']) as $key => $value) {

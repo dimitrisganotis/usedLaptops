@@ -478,10 +478,16 @@
 
                 <div class="form-group">
                     <label for="photo">Upload Photo</label>
-                    <div class="form-group custom-file">
+                    <div class="custom-file @error('photo') is-invalid @enderror">
                         <input type="file" name="photo" class="custom-file-input" id="photo">
                         <label class="custom-file-label" for="photo">Choose file...</label>
                     </div>
+
+                    @error('photo')
+                        <div class="invalid-feedback">
+                            {{ $errors->first('photo') }}
+                        </div>
+                    @enderror
                 </div>
 
                 <hr>
