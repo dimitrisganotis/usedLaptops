@@ -17001,6 +17001,9 @@ readers do not read off random characters that represent icons */
 .card-img-top {
   width: 60% !important;
   margin: 0 auto;
+  height: 15rem;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .basic-laptop-info {
