@@ -1,8 +1,10 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+![screenshot](https://raw.githubusercontent.com/dimitrisganotis/usedLaptops/master/public/image/usedlaptops_screenshot.png)
 
 # usedLaptops (v2.0)
 
 Usedlaptops is the **first** application I have ever developed, to the standards of a university project assigned to me.
+
+Demo URL: https://usedlaptops.dimitrisganotis.gr
 
 ## Built With
 
@@ -14,7 +16,7 @@ Usedlaptops is the **first** application I have ever developed, to the standards
 
 ## About v2.0
 
-This is a rewrite of usedLaptops (v1.0). While i was learning the Laravel Framework, I decided to remake this project.
+This is a rewrite of usedLaptops (v1.0). While learning the Laravel Framework, I decided to remake this project.
 
 ## Installation
 
@@ -27,3 +29,4 @@ This is a rewrite of usedLaptops (v1.0). While i was learning the Laravel Framew
 * Run `php artisan migrate`
 * Run `php artisan db:seed`
 * Run `php artisan storage:link`
+
