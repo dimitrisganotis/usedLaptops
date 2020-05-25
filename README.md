@@ -1,4 +1,4 @@
-![screenshot](https://raw.githubusercontent.com/dimitrisganotis/usedLaptops/master/public/image/usedlaptops_screenshot.png)
+<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 # usedLaptops (v2.0)
 
@@ -30,3 +30,6 @@ This is a rewrite of usedLaptops (v1.0). While learning the Laravel Framework, I
 * Run `php artisan db:seed`
 * Run `php artisan storage:link`
 
+## App Screenshot
+
+![screenshot](https://raw.githubusercontent.com/dimitrisganotis/usedLaptops/master/public/image/screenshot.png)
